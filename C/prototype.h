@@ -14,7 +14,7 @@
 #define VECTORS 0
 #define MATRIXES 0
 #define SLA 0
-#define CURIOSIDADES 1
+#define CURIOSIDADES 0
 
 #if VECTORS
 
@@ -40,10 +40,13 @@ void matrizComoArgumento1(const int matrix[ROW][COL]);
 void matrizComoArgumento2(const int matrix[][COL], const int);
 void matrizComoArgumento3(const int *);
 void matrizComoArgumento4(const int *, const int, const int);
+int diagonalDifference(const int, const int, int**);
+void diferencaDiagonal();
 #endif
 
 #if SLA
 int strCmp(const void*, const void*);
+
 #endif
 
 #if CURIOSIDADES

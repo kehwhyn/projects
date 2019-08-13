@@ -2,11 +2,12 @@
  * email: kevinboucinha@gmail.com
  */
 
-#include"prototype.h"
+#include "prototype.h"
 
-#include<stdio.h>
-#include<string.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 #if VECTORS
 void vetorComoArgumento1(const int vector[TAM]){
@@ -73,6 +74,41 @@ void matrizComoArgumento4(const int *matrix, const int row, const int col){
 	        printf("%d ", *((matrix + i * col) + j));
 	     printf("\n");
     }
+}
+
+void diferencaDiagonal(){
+
+    int **matrix, size = 3;
+    int result = 0;
+
+    //alocando matriz
+    matrix = calloc(size, sizeof(int*));
+    for(int i = 0; i < size; i++)
+        matrix[i] = calloc(size, sizeof(int));
+    
+    //populando a matriz
+    for(int i = 0; i < size; i++)
+        for(int j = 0; j < size; j++)
+            matrix[i][j] = (i+j)*2;
+   
+    result = diagonalDifference(size,size, matrix);
+    printf("%d\n", result);
+   
+    //liberando memoria usada
+    for(int i = 0; i < size; i++)
+        free(matrix[i]);
+    free(matrix);
+}
+
+int diagonalDifference(const int arr_rows, const int arr_columns, int **arr){
+    int dp = 0, ds = 0;
+
+    for(int i = 0, j = arr_columns-1; i < arr_rows; i++, j--){
+        dp += arr[i][i];
+        ds += *(*(arr + i) + j);
+    }
+
+    return abs(dp - ds);
 }
 #endif
 

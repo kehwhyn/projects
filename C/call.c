@@ -23,7 +23,8 @@
 
 #endif
 
-#include"prototype.h"
+#include "prototype.h"
+#include <stdio.h>
 
 #if VECTORS
 int main(int argc, char *argv[]){
@@ -54,14 +55,14 @@ int main(int argc, char *argv[]){
 	matrizComoArgumento2(matrix, ROW);
 	matrizComoArgumento3((int*)matrix);
 	matrizComoArgumento4((int*)matrix, ROW, COL);
-
+	diferencaDiagonal();
 }
 #endif
 
 #if SLA
 int main(int argc, char *argv[]){
-
-    printf("%d\n", compare("Kevin", "Micaelle"));
+    
+    printf("%d\n", strCmp("Kevin", "Micaelle"));
 }
 #endif
 
