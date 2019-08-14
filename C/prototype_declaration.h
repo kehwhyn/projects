@@ -50,6 +50,8 @@ int strCmp(const void*, const void*);
 #endif
 
 #if CURIOSIDADES
-void commaOperatorTest();
-void testeShift();
+void commaOperatorTest(void);
+void testeShift(void);
+void testeRegex(void);
+void tamanhos(void);
 #endif

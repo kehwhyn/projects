@@ -6,11 +6,10 @@
 //implementam umas definições e macros que eu achei massa
 #include <iso646.h>
 #include <stdbool.h>
+#include <regex.h>
 
 #include <time.h>
 //time()
-#include <ctype.h>
-// isalnum(), isxdigit()
 #include <stdio.h>
 //printf(), scanf()
 #include <string.h>
@@ -129,14 +128,14 @@ int strCmp(const void *a, const void *b){
 #endif
 
 #if CURIOSIDADES
-void commaOperatorTest(){
+void commaOperatorTest(void){
 
 	bool aux = true;
 
 	(aux) ? printf("\t1\n"), printf("\t3\n") : printf("2\n");
 }
 
-void testeShift(){
+void testeShift(void){
 
 	printf("%08x - 1 << 10\n", 1 << 10);
 	printf("%08x - 1 << 3\n", 1 << 3);
@@ -147,6 +146,38 @@ void testeShift(){
     printf("%08x -   ^\n", (1 << 10) ^ (1 << 3));
     //printf("%08x -   %\n", (1 << 10) % 10);
     printf("%08x -   /\n", (1 << 10) / 10);
+}
+
+void testeRegex(void){
+
+    regex_t reg;
+
+    regcomp(&reg, "[A-F;a-f;0-9]",REG_EXTENDED|REG_NOSUB);
+    if(!regexec(&reg, "ZKevin", 0, (regmatch_t*)NULL,0))
+        printf("Okay\n");
+    else
+        printf("Erro\n");
+        
+}
+
+void tamanhos(void){
+
+    printf("SIGNED\n");
+    printf("%zu char\n", sizeof(char));
+    printf("%zu short\n", sizeof(short));
+    printf("%zu int\n", sizeof(int));
+    printf("%zu long\n", sizeof(long));
+    printf("%zu long long\n", sizeof(long long));
+    printf("%zu float\n", sizeof(float));
+    printf("%zu double\n", sizeof(double));
+    printf("%zu long double\n", sizeof(long double));
+    printf("UNSIGNED\n");
+    printf("%zu char\n", sizeof(int*)); //pointer size
+    printf("%zu char\n", sizeof(unsigned char));
+    printf("%zu short\n", sizeof(unsigned short));
+    printf("%zu int\n", sizeof(unsigned));
+    printf("%zu long\n", sizeof(unsigned long));
+    printf("%zu long long\n", sizeof(unsigned long long));
 }
 #endif
 
