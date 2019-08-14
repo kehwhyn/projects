@@ -33,14 +33,14 @@ void exibindoVetorComoMatriz(const int *, const int, const int);
 
 #if MATRIXES
 
-#define ROW 2
-#define COL 2
+#define ROW 3
+#define COL 3
 
 void matrizComoArgumento1(const int matrix[ROW][COL]);
 void matrizComoArgumento2(const int matrix[][COL], const int);
 void matrizComoArgumento3(const int *);
 void matrizComoArgumento4(const int *, const int, const int);
-int diagonalDifference(const int, const int, int**);
+int diagonalDifference(int const arr_rows, int const arr_columns, int const **arr);
 void diferencaDiagonal();
 #endif
 

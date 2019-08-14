@@ -23,7 +23,7 @@
 
 #endif
 
-#include "prototype.h"
+#include "prototype_declaration.h"
 #include <stdio.h>
 
 #if VECTORS
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]){
 	matrizComoArgumento2(matrix, ROW);
 	matrizComoArgumento3((int*)matrix);
 	matrizComoArgumento4((int*)matrix, ROW, COL);
-	diferencaDiagonal();
+	matrizDeclarada();
 }
 #endif
 

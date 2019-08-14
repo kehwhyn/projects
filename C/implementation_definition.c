@@ -2,12 +2,21 @@
  * email: kevinboucinha@gmail.com
  */
 
-#include "prototype.h"
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include "prototype_declaration.h"
+//implementam umas definições e macros que eu achei massa
+#include <iso646.h>
 #include <stdbool.h>
+
+#include <time.h>
+//time()
+#include <ctype.h>
+// isalnum(), isxdigit()
+#include <stdio.h>
+//printf(), scanf()
+#include <string.h>
+//strcmp()
+#include <stdlib.h>
+//srand(), rand(), calloc(), free(), abs()
 
 #if VECTORS
 void vetorComoArgumento1(const int vector[TAM]){
@@ -76,34 +85,31 @@ void matrizComoArgumento4(const int *matrix, const int row, const int col){
     }
 }
 
-void diferencaDiagonal(){
+void matrizCriada(){
 
-    int **matrix, size = 3;
-    int result = 0;
+    int **matrix = calloc(ROW, sizeof(int*));
 
-    //alocando matriz
-    matrix = calloc(size, sizeof(int*));
-    for(int i = 0; i < size; i++)
-        matrix[i] = calloc(size, sizeof(int));
+    srand(time(NULL));
+
+    for (int i = 0; i < ROW; i++)
+            matrix[i] = calloc(COL, sizeof(int*));
+
+    for (int i = 0; i < ROW; i++)
+        for (int j = 0; j < COL; j++)
+            matrix[i][j] = rand()%100 + 1;
     
-    //populando a matriz
-    for(int i = 0; i < size; i++)
-        for(int j = 0; j < size; j++)
-            matrix[i][j] = (i+j)*2;
-   
-    result = diagonalDifference(size,size, matrix);
-    printf("%d\n", result);
-   
-    //liberando memoria usada
-    for(int i = 0; i < size; i++)
+    //must return 15
+    printf("%d\n", diagonalDifference(ROW, COL, matrix));
+    
+    for (int i = 0; i < ROW; i++)
         free(matrix[i]);
     free(matrix);
 }
 
-int diagonalDifference(const int arr_rows, const int arr_columns, int **arr){
+int diagonalDifference(int const arr_rows, int const arr_columns, int const **arr){
     int dp = 0, ds = 0;
 
-    for(int i = 0, j = arr_columns-1; i < arr_rows; i++, j--){
+    for(int i = 0, j = arr_columns - 1; i < arr_rows; i++, j--){
         dp += arr[i][i];
         ds += *(*(arr + i) + j);
     }
