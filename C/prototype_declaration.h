@@ -14,7 +14,7 @@
 #define VECTORS 0
 #define MATRIXES 0
 #define SLA 0
-#define CURIOSIDADES 0
+#define CURIOSIDADES 1
 
 #if VECTORS
 

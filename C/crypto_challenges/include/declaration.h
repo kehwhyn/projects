@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 bool valid(char const *string);
 bool isHex(char const *string);
 bool isBase64(char const* string);

@@ -1,15 +1,11 @@
-#include "declaration.h"
+#include "../../include/declaration.h"
 
 #include <stdio.h>
 //printf(), scanf(), sprintf(), sscanf()
-#include <regex.h>
-//
 #include <string.h>
 //strlen(), strchr()
 #include <stdlib.h>
 //calloc()
-#include <stdbool.h>
-//bool, true, false
 #include <ctype.h>
 //isxdigit()
 
@@ -21,10 +17,10 @@ bool valid(char const *string){
 }
 
 bool isHex(char const *string){
-    if(!valid(string) || (strlen(string) % 2 != 0)) return false;
-
-    for(int i = 0; i <= strlen(string); i++)
-        if(not isxdigit(string[i])) return false;
+    if(!valid(string) || strlen(string) % 2) return false;
+    
+    for(int i = 0; i < strlen(string); i++)
+        if(!isxdigit(string[i])) return false;
 
     return true;
 }
@@ -40,9 +36,8 @@ bool isBase64(char const* string){
 
 // 2 hex digits == 1 ascii character
 char *hexDecoder(char const *string){
-
-    if(!isHex(string)) return NULL;
-
+    if(!isHex(string)) return NULL; //aqui jaz o probs
+    
     int const SIZE = strlen(string)/2;
     char *decoded = calloc(SIZE + 1, sizeof(char));
     if(!decoded) return decoded;
@@ -55,7 +50,6 @@ char *hexDecoder(char const *string){
 }
 
 char *hexEncoder(char const *string){
-
     if(!valid(string)) return NULL;
 
     int const SIZE = strlen(string) * 2;
@@ -71,7 +65,6 @@ char *hexEncoder(char const *string){
 
 // 4 values in b64 == 3 values in ascii
 char *b64Encoder(char const *string){
-
     if(!valid(string)) return NULL;
 
     int const SIZE = strlen(string) * 4 / 3;
@@ -91,13 +84,11 @@ char *b64Encoder(char const *string){
         strncpy(encoded + iter++, &BASE64_VALUES[index3], sizeof(char));
         strncpy(encoded + iter++, &BASE64_VALUES[index4], sizeof(char));
     }
-
     int const PADDING = strlen(string) % 3;
     if(PADDING == 1)
         strncpy(encoded + iter - 2, "==", sizeof(char)*3);
     else if(PADDING == 2)
         strncpy(encoded + iter - 1, "=", sizeof(char)*2);
-
     encoded[SIZE + 1] = '\0';
     return encoded;
 }

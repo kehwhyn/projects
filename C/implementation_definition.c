@@ -157,7 +157,6 @@ void testeRegex(void){
         printf("Okay\n");
     else
         printf("Erro\n");
-        
 }
 
 void tamanhos(void){
@@ -172,7 +171,7 @@ void tamanhos(void){
     printf("%zu double\n", sizeof(double));
     printf("%zu long double\n", sizeof(long double));
     printf("UNSIGNED\n");
-    printf("%zu char\n", sizeof(int*)); //pointer size
+    printf("%zu pointer size\n", sizeof(int*));
     printf("%zu char\n", sizeof(unsigned char));
     printf("%zu short\n", sizeof(unsigned short));
     printf("%zu int\n", sizeof(unsigned));
