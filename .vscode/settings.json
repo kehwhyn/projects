@@ -2,6 +2,8 @@
     "files.associations": {
         "prototype_declaration.h": "c",
         "stdio.h": "c",
-        "cstdio": "c"
+        "cstdio": "c",
+        "iso646.h": "c",
+        "declaration.h": "c"
     }
 }

@@ -2,25 +2,17 @@ function result = absoluteError(value, approximate)
     result = abs(value - approximate);
 endfunction
 
-function result = relativeError(errA, approximate)
+function result = relativeError(value, approximate)
+    errA = absoluteError(value, approximate);
     result = errA / abs(approximate);
 endfunction
-%function result = relativeError(value, approximate)
-%    errA = absoluteError(value, approximate);
-%    result = rdivide(errA, abs(approximate);
-%endfunction
 
-function result = DIGSE(errR, base, precision)
-    %cientific
-    mi = 0.5 * power(base, 1 - precision);
-    result = -(0.3 + log10(mi + errR));
+function result = DIGSE(value, approximate, base, precision)
+    errR = relativeError(value, approximate);
+    %científico
+    mi = 0.5 *  power(base, 1 - precision);
+    result = - (0.3 +  log10(mi + errR));
 endfunction
-%function result = DIGSE(value, approximate, base, precision)
-%    errR = relativeError(value, approximate);
-%    %científico
-%    mi = times(1/2, power(base, minus(1, precision)));
-%    result = -(plus(0.3, log10(plus(mi, errR))));
-%endfunction
 
 function result = newton(value, approximate, numberOfIterations, base, precision)
 
@@ -41,4 +33,4 @@ function result = newton(value, approximate, numberOfIterations, base, precision
     result = value;
 endfunction
 
-sla = newton(2, 2, 10, 10, 7)
+DIGSE(sqrt(2), 1.4142, 10, 5)
