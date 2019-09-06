@@ -177,6 +177,16 @@ void tamanhos(void){
     printf("%zu int\n", sizeof(unsigned));
     printf("%zu long\n", sizeof(unsigned long));
     printf("%zu long long\n", sizeof(unsigned long long));
+
+    int *p1 = NULL, *p2 = NULL, *p3 = NULL;
+
+    p1 = (int*)calloc(1, sizeof(int*));
+    p2 = (int*)calloc(1, sizeof(int));
+    p3 = calloc(1, sizeof(int));
+
+    printf("%zu %zu %lu\n", sizeof(p1), sizeof(*p1), &p1);
+    printf("%zu %zu %lu\n", sizeof(p2), sizeof(*p2), &p2);
+    printf("%zu %zu %lu\n", sizeof(p3), sizeof(*p3), &p3);
 }
 #endif
 

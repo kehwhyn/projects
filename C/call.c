@@ -69,7 +69,6 @@ int main(int argc, char *argv[]){
 #if CURIOSIDADES
 int main(int argc, char *argv[]){
 
-    commaOperatorTest();
-    testeShift();
+    tamanhos();
 }
 #endif
