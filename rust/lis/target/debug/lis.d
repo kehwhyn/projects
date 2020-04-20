@@ -1,1 +1,1 @@
-/home/linuxlite/projects/RUST/lis/target/debug/lis: /home/linuxlite/projects/RUST/lis/src/main.rs
+/home/kehwhyn/Documents/projects/rust/lis/target/debug/lis: /home/kehwhyn/Documents/projects/rust/lis/src/main.rs
