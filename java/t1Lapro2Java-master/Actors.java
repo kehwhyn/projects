@@ -1,1 +1,0 @@
-class Actors extends Person {}
