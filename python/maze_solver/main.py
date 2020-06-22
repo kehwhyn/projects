@@ -53,7 +53,7 @@ def show_menu_options():
 
 
 def read_user_input():
-    return int(input("Digite o número da sua opção: "))
+    return int(input('Digite o número da sua opção: '))
 
 
 def choose_one_file():
@@ -103,16 +103,15 @@ def map_maze(file_path):
 
 
 def shortest_path(maze, offset, source, destiny):
-    maze[source] = 0
     queue = deque([source])
-    while len(queue) != 0:
+    w = maze[source] = 0
+    while w != destiny:
         v = queue.popleft()
         for w in (v - offset, v - 1, v + offset, v + 1):
             if maze[w] != '#' and type(maze[w]) is not int:
                 maze[w] = maze[v] + 1
-                if w == destiny:
-                    return maze[w]
                 queue.append(w)
+    return maze[w]
 
 
 def process_all_files():
