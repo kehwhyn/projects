@@ -4,9 +4,9 @@ import time
 from collections import deque
 from contextlib import contextmanager
 
-FILE_PATH = 0
-OFFSET = 1
-VALUES = (
+FILE_PATH: int = 0
+OFFSET: int = 1
+VALUES: (str, int) = (
     ("T2/caso1_cohen.txt", 100),
     ("T2/caso2_cohen.txt", 200),
     ("T2/caso3_cohen.txt", 500),
@@ -18,18 +18,18 @@ VALUES = (
 
 
 @contextmanager
-def timeit_context(name):
-    start_time = time.time()
+def timeit_context(name: str) -> None:
+    start_time: float = time.time()
     yield
-    elapsed_time = time.time() - start_time
+    elapsed_time: float = time.time() - start_time
     print('[{}] finished in {} ms'
           .format(name, int(elapsed_time * 1000)))
     print()
 
 
-def main():
+def main() -> None:
     print('Olá! :D')
-    option = 0
+    option: int = 0
     while option != 3:
         show_menu_options()
         option = read_user_input()
@@ -45,68 +45,68 @@ def main():
             print('Opção inválida, tente novamente')
 
 
-def show_menu_options():
+def show_menu_options() -> None:
     print('O que deseja fazer?')
     print('1 - Executar um único arquivo.')
     print('2 - Executar todos os arquivos.')
     print('3 - Terminar o programa.')
 
 
-def read_user_input():
+def read_user_input() -> int:
     return int(input('Digite o número da sua opção: '))
 
 
-def choose_one_file():
+def choose_one_file() -> None:
     show_files_options()
     while True:
-        chosen_file = read_user_input()
+        chosen_file: int = read_user_input()
         if chosen_file < len(VALUES):
             process_one_file(chosen_file)
             break
-        print("Por favor, digite um número válido.")
+        print('Por favor, digite um número válido.')
 
 
-def show_files_options():
+def show_files_options() -> None:
     print()
     print('Aqui estão os arquivos disponíveis:')
     for index, aux in enumerate(VALUES):
-        file_name = aux[0].split('/')[1]
+        file_name: str = aux[0].split('/')[1]
         print('{} - {}'.format(index, file_name))
 
 
-def process_one_file(chosen_file):
-    file_name = VALUES[chosen_file][FILE_PATH].split('/')[1]
+def process_one_file(chosen_file: int) -> None:
+    file_name: str = VALUES[chosen_file][FILE_PATH].split('/')[1]
     with timeit_context(file_name):
-        maze = map_maze(VALUES[chosen_file][FILE_PATH])
-        hero = maze.index('A')
-        villain = maze.index('B')
-        answer = shortest_path(
+        maze: [str] = map_maze(VALUES[chosen_file][FILE_PATH])
+        hero: int = maze.index('A')
+        villain: int = maze.index('B')
+        answer: int = shortest_path(
             maze,
             VALUES[chosen_file][OFFSET],
             hero,
             villain
         )
         print()
-        print('>>> {} => {}'
-              .format(file_name, answer))
+        print('>>> {} => {}'.format(file_name, answer))
 
 
-def map_maze(file_path):
+def map_maze(file_path: str) -> [str]:
     with open(file_path, 'r') as file:
-        tmp = ([
+        tmp: [str] = [
             char
             for line in file
             for char in line
             if char != '\n'
-        ])
+        ]
     return tmp
 
 
-def shortest_path(maze, offset, source, destiny):
-    queue = deque([source])
-    w = maze[source] = 0
+def shortest_path(maze: [str], offset: int, source: int, destiny: int) -> int:
+    queue: deque[int] = deque([source])
+    w: int = 0
+    maze[source] = 0
     while w != destiny:
-        v = queue.popleft()
+        v: int = queue.popleft()
         for w in (v - offset, v - 1, v + offset, v + 1):
             if maze[w] != '#' and type(maze[w]) is not int:
                 maze[w] = maze[v] + 1
@@ -114,7 +114,7 @@ def shortest_path(maze, offset, source, destiny):
     return maze[w]
 
 
-def process_all_files():
+def process_all_files() -> None:
     print('This might take a while...')
     for chosen_file in range(len(VALUES)):
         process_one_file(chosen_file)
