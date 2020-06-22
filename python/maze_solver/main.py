@@ -30,14 +30,14 @@ def timeit_context(name):
 def main():
     print('Olá! :D')
     option = 0
-    while option is not 3:
+    while option != 3:
         show_menu_options()
         option = read_user_input()
-        if option is 1:
+        if option == 1:
             choose_one_file()
-        elif option is 2:
+        elif option == 2:
             process_all_files()
-        elif option is 3:
+        elif option == 3:
             print('Bye! :D')
             break
         else:
@@ -97,36 +97,22 @@ def map_maze(file_path):
             char
             for line in file
             for char in line
-            if char is not '\n'
+            if char != '\n'
         ])
     return tmp
 
 
-def map_maze_as_matrix(file_path):
-    tmp = []
-    with open(file_path, 'r') as file:
-        for row, line in enumerate(file):
-            tmp.append([])
-            for char in line:
-                if char is not '\n':
-                    tmp[row].append(char)
-    return tmp
-
-
 def shortest_path(maze, offset, source, destiny):
-    visited = [False] * len(maze)
-    dist_to = [0] * len(maze)
+    maze[source] = 0
     queue = deque([source])
-    while len(queue) is not 0:
+    while len(queue) != 0:
         v = queue.popleft()
-        for w in [v - offset, v - 1, v + offset, v + 1]:
-            if maze[w] is not '#':
-                if not visited[w]:
-                    if w == destiny:
-                        return dist_to[v] + 1
-                    dist_to[w] = dist_to[v] + 1
-                    visited[w] = True
-                    queue.append(w)
+        for w in (v - offset, v - 1, v + offset, v + 1):
+            if maze[w] != '#' and type(maze[w]) is not int:
+                maze[w] = maze[v] + 1
+                if w == destiny:
+                    return maze[w]
+                queue.append(w)
 
 
 def process_all_files():
@@ -135,40 +121,5 @@ def process_all_files():
         process_one_file(chosen_file)
 
 
-def shortest_path_2(maze, offset, source, destiny):
-    INDEX = 0
-    VISITED = 1
-    DIST_TO = 2
-    all = [source, True, 0]
-    queue = deque([all])
-    while len(queue) is not 0:
-        current_position = queue.popleft()
-        print(current_position)
-        for neighbor in [
-            [current_position[INDEX] - offset, False, current_position[DIST_TO]],  # up
-            [current_position[INDEX] - 1, False, current_position[DIST_TO]],  # left
-            [current_position[INDEX] + offset, False, current_position[DIST_TO]],  # down
-            [current_position[INDEX] + 1, False, current_position[DIST_TO]],  # right
-        ]:
-            if maze[neighbor[INDEX]] is not '#':
-                # O objeto que entrou na fila tem que ser composto de uma lista == [index, visited, dist_to]
-                # isso redux o uso de memória por alocar dois vetores
-                # depois de usar o valor eliminar a tupla
-                if not neighbor[VISITED]:
-                    neighbor[DIST_TO] = current_position[DIST_TO] + 1
-                    neighbor[VISITED] = True
-                    queue.append(neighbor)
-    return 0
-
-
-def main_2():
-    maze = map_maze('T2/caso0_cohen.txt') # 11 é a resposta certa
-    hero = maze.index('A')
-    villain = maze.index('B')
-    answer = shortest_path(maze, 10, hero, villain)
-    print(answer)
-
-
 if __name__ == '__main__':
     main()
-    #main_2()
