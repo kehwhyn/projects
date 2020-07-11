@@ -7,13 +7,13 @@ from contextlib import contextmanager
 FILE_PATH: int = 0
 OFFSET: int = 1
 VALUES: (str, int) = (
-    ("T2/caso1_cohen.txt", 100),
-    ("T2/caso2_cohen.txt", 200),
-    ("T2/caso3_cohen.txt", 500),
-    ("T2/caso4_cohen.txt", 1000),
-    ("T2/caso5_cohen.txt", 2000),
-    ("T2/caso6_cohen.txt", 5000),
-    ("T2/caso7_cohen.txt", 20000),
+    ('T2/caso1_cohen.txt', 100),
+    ('T2/caso2_cohen.txt', 200),
+    ('T2/caso3_cohen.txt', 500),
+    ('T2/caso4_cohen.txt', 1000),
+    ('T2/caso5_cohen.txt', 2000),
+    ('T2/caso6_cohen.txt', 5000),
+    ('T2/caso7_cohen.txt', 20000),
 )
 
 
@@ -22,13 +22,12 @@ def timeit_context(name: str) -> None:
     start_time: float = time.time()
     yield
     elapsed_time: float = time.time() - start_time
-    print('[{}] finished in {} ms'
-          .format(name, int(elapsed_time * 1000)))
+    print(f'[{name}] finished in {int(elapsed_time * 1000)} ms')
     print()
 
 
 def main() -> None:
-    print('Olá! :D')
+    print('Welcome! :D')
     option: int = 0
     while option != 3:
         show_menu_options()
@@ -42,18 +41,18 @@ def main() -> None:
             break
         else:
             print()
-            print('Opção inválida, tente novamente')
+            print('Invalid option. Please, try again.')
 
 
 def show_menu_options() -> None:
-    print('O que deseja fazer?')
-    print('1 - Executar um único arquivo.')
-    print('2 - Executar todos os arquivos.')
-    print('3 - Terminar o programa.')
+    print('What would you like to do?')
+    print('1 - Run one file.')
+    print('2 - Run all files.')
+    print('3 - Finish program.')
 
 
 def read_user_input() -> int:
-    return int(input('Digite o número da sua opção: '))
+    return int(input('Enter your option: '))
 
 
 def choose_one_file() -> None:
@@ -63,12 +62,12 @@ def choose_one_file() -> None:
         if chosen_file < len(VALUES):
             process_one_file(chosen_file)
             break
-        print('Por favor, digite um número válido.')
+        print('Please, enter a valid number.')
 
 
 def show_files_options() -> None:
     print()
-    print('Aqui estão os arquivos disponíveis:')
+    print('Here are all the available files:')
     for index, aux in enumerate(VALUES):
         file_name: str = aux[0].split('/')[1]
         print('{} - {}'.format(index, file_name))
@@ -87,7 +86,7 @@ def process_one_file(chosen_file: int) -> None:
             villain
         )
         print()
-        print('>>> {} => {}'.format(file_name, answer))
+        print(f'>>> {file_name} => {answer}')
 
 
 def map_maze(file_path: str) -> [str]:
@@ -103,15 +102,15 @@ def map_maze(file_path: str) -> [str]:
 
 def shortest_path(maze: [str], offset: int, source: int, destiny: int) -> int:
     queue: deque[int] = deque([source])
-    w: int = 0
+    next_pos: int = 0
     maze[source] = 0
-    while w != destiny:
-        v: int = queue.popleft()
-        for w in (v - offset, v - 1, v + offset, v + 1):
-            if maze[w] != '#' and type(maze[w]) is not int:
-                maze[w] = maze[v] + 1
-                queue.append(w)
-    return maze[w]
+    while next_pos != destiny:
+        curr_pos: int = queue.popleft()
+        for next_pos in (curr_pos - offset, curr_pos - 1, curr_pos + offset, curr_pos + 1):
+            if maze[next_pos] != '#' and type(maze[next_pos]) is not int:
+                maze[next_pos] = maze[curr_pos] + 1
+                queue.append(next_pos)
+    return maze[destiny]
 
 
 def process_all_files() -> None:
