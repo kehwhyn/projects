@@ -25,7 +25,6 @@ def timeit_context(name: str) -> None:
     print(f'[{name}] finished in {int(elapsed_time * 1000)} ms')
     print()
 
-
 def main() -> None:
     print('Welcome! :D')
     option: int = 0

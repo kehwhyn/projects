@@ -1,30 +1,30 @@
 use std::{
-    collections::BTreeMap,
     fs::File,
     path::Path,
     time::Instant,
+    collections::VecDeque,
     io::{BufRead, BufReader, Lines, Result},
 };
 
 const HI: usize = 1;
 const LO: usize = 0;
 const FILES_PATH: [&str;13] = [
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen00.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen01.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen02.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen03.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen04.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen05.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen06.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen07.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen08.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen09.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen10.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen11.txt",
-    "/home/kehwhyn/Documentds/data/alest_2/T1/cohen12.txt"
+    "./ip_list_filter_test_cases/casoenunciado.txt",
+    "./ip_list_filter_test_cases/cohen01.txt",
+    "./ip_list_filter_test_cases/cohen02.txt",
+    "./ip_list_filter_test_cases/cohen03.txt",
+    "./ip_list_filter_test_cases/cohen04.txt",
+    "./ip_list_filter_test_cases/cohen05.txt",
+    "./ip_list_filter_test_cases/cohen06.txt",
+    "./ip_list_filter_test_cases/cohen07.txt",
+    "./ip_list_filter_test_cases/cohen08.txt",
+    "./ip_list_filter_test_cases/cohen09.txt",
+    "./ip_list_filter_test_cases/cohen10.txt",
+    "./ip_list_filter_test_cases/cohen11.txt",
+    "./ip_list_filter_test_cases/cohen12.txt"
 ];
 const FILES_NAME: [&str;13] = [
-    "cohen00.txt",
+    "casoenunciado.txt",
     "cohen01.txt",
     "cohen02.txt",
     "cohen03.txt",
@@ -48,20 +48,14 @@ fn main() {
 }
 
 fn menu () -> usize {
-    show_options();
+    show_menu_options();
     let option = read_user_input();
     match option {
         1 => {
-            let start = Instant::now();
-            process_one_file();
-            let duration = start.elapsed();
-            println!("Time to process file: {:?}", duration);
+            choose_one_file();
         },
         2 => {
-            let start = Instant::now();
-            process_all_files();
-            let duration = start.elapsed();
-            println!("Time to process all files: {:?}", duration);
+            run_all_files();
         },
         3 => {
             println!();
@@ -75,11 +69,31 @@ fn menu () -> usize {
     option
 }
 
-fn show_options () {
+fn show_menu_options () {
     println!();
     println!("1 - Executar um único arquivo.");
     println!("2 - Executar todos os arquivos.");
     println!("3 - Encerrar.");
+}
+
+fn choose_one_file() {
+    loop {
+        show_file_options();
+        let chosen_file = read_user_input();
+        if chosen_file < 13 {
+            process_single_file(chosen_file);
+            break;
+        }
+        println!("Por favor digite um número válido.");
+    }
+}
+
+fn show_file_options () {
+    println!();
+    println!("Estes são os arquivos disponiveis:");
+    for (index, file_name) in FILES_NAME.iter().enumerate() {
+        println!(">>> {} - {}", index, file_name)
+    }
 }
 
 fn read_user_input () -> usize {
@@ -94,41 +108,18 @@ fn read_user_input () -> usize {
     }
 }
 
-fn process_one_file () {
-    println!("Estes são os arquivos disponiveis:");
-    show_file_options();
-    loop {
-        let index = read_user_input();
-        if index < 13 {
-            let ip_list = read_file(FILES_PATH[index]);
-            let file_name = FILES_NAME[index];
-            let length = least_possible_list_size(ip_list);
-            println!();
-            println!(">>> {} => {}", file_name, length);
-            break;
-        }
-        println!("Por favor digite um número válido.");
-    }
-}
-
-fn show_file_options () {
+fn process_single_file (chosen_file: usize) {
+    let start = Instant::now();
+    let answer = least_possible_list_size(
+        get_sorted_ip_list(FILES_PATH[chosen_file])
+    );
+    let duration = start.elapsed();
     println!();
-    println!("0 - cohen00.txt");
-    println!("1 - cohen01.txt");
-    println!("2 - cohen02.txt");
-    println!("3 - cohen03.txt");
-    println!("4 - cohen04.txt");
-    println!("5 - cohen05.txt");
-    println!("6 - cohen06.txt");
-    println!("7 - cohen07.txt");
-    println!("8 - cohen08.txt");
-    println!("9 - cohen09.txt");
-    println!("10 - cohen10.txt");
-    println!("11 - cohen11.txt");
-    println!("12 - cohen12.txt");
+    println!("Time to process file: {:?}", duration);
+    println!(">>> {} => {}", FILES_NAME[chosen_file], answer);
 }
 
-fn read_file (file_path: &str) -> Vec<Vec<i32>> {
+fn get_sorted_ip_list (file_path: &str) -> Vec<Vec<i32>> {
     let mut ip_list = Vec::<Vec<i32>>::new();
     let file_path = Path::new(file_path);
     for line in read_lines(file_path).unwrap() {
@@ -151,17 +142,15 @@ fn read_lines (filename: &Path) -> Result<Lines<BufReader<File>>> {
 }
 
 fn least_possible_list_size (ip_list: Vec<Vec<i32>>) -> usize {
-    let mut blocked_ranges = Vec::<Vec<i32>>::new();
-    let mut last_element: usize = 0;
+    let mut blocked_ranges = VecDeque::<Vec<i32>>::new();
     
     for ip_pair in ip_list {
         if blocked_ranges.is_empty() {
-            blocked_ranges.push(ip_pair);
-        } else if change_higher_value(&ip_pair, &blocked_ranges[last_element]) {
-            blocked_ranges[last_element][HI] = ip_pair[HI];
-        } else if !contained(&ip_pair, &blocked_ranges[last_element]) {
-            blocked_ranges.push(ip_pair);
-            last_element += 1;
+            blocked_ranges.push_back(ip_pair);
+        } else if change_higher_value(&ip_pair, &blocked_ranges.back().unwrap()) {
+            blocked_ranges.back_mut().unwrap()[HI] = ip_pair[HI];
+        } else if !contained(&ip_pair, &blocked_ranges.back().unwrap()) {
+            blocked_ranges.push_back(ip_pair);
         }
     }
     blocked_ranges.len()
@@ -170,7 +159,7 @@ fn least_possible_list_size (ip_list: Vec<Vec<i32>>) -> usize {
 fn change_higher_value (interval_1: &Vec<i32>, interval_2: &Vec<i32>) -> bool {
     return interval_2[LO] < interval_1[LO]
         && interval_1[LO] < interval_2[HI]
-        && interval_1[HI] >= interval_2[HI];
+        && interval_2[HI] <= interval_1[HI];
 }
 
 fn contained (interval_1: &Vec<i32>, interval_2: &Vec<i32>) -> bool {
@@ -178,20 +167,12 @@ fn contained (interval_1: &Vec<i32>, interval_2: &Vec<i32>) -> bool {
         && interval_1[HI] < interval_2[HI];
 }
 
-fn process_all_files () {
-    println!();
-    println!("Computando as respostas...");
-
-    let mut answers = BTreeMap::<&str, usize>::new();
-    for (index, path) in FILES_PATH.iter().enumerate() {
-        let ip_list = read_file(path);
-        let file_name = FILES_NAME[index];
-        let length = least_possible_list_size(ip_list);
-        answers.insert(file_name, length);
+fn run_all_files () {
+    let start = Instant::now();
+    for chosen_file in 0..13 {
+        process_single_file(chosen_file);
     }
-
+    let duration = start.elapsed();
     println!();
-    for (file_name, length) in answers {
-        println!(">>> {} => {}", file_name, length);
-    }
+    println!("Time to process all files: {:?}", duration);
 }
