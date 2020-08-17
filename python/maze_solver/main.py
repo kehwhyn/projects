@@ -16,7 +16,6 @@ VALUES: (str, int) = (
     ('T2/caso7_cohen.txt', 20000),
 )
 
-
 @contextmanager
 def timeit_context(name: str) -> None:
     start_time: float = time.time()

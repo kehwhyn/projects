@@ -40,10 +40,12 @@ const FILES_NAME: [&str;13] = [
 ];
 
 fn main() {
-    loop {
-        if menu() == 3 {
-            break;
-        }
+    let args: Vec<String> = env::args().collect();
+    if Path::new(args[0]).is_file() {
+        process_single_file(args[0]);
+    }
+    else {
+        run_all_files(args[0]);
     }
 }
 
@@ -111,12 +113,12 @@ fn read_user_input () -> usize {
 fn process_single_file (chosen_file: usize) {
     let start = Instant::now();
     let answer = least_possible_list_size(
-        get_sorted_ip_list(FILES_PATH[chosen_file])
+        get_sorted_ip_list(file_path)
     );
     let duration = start.elapsed();
     println!();
     println!("Time to process file: {:?}", duration);
-    println!(">>> {} => {}", FILES_NAME[chosen_file], answer);
+    println!(">>> {} => {}", file_path, answer);
 }
 
 fn get_sorted_ip_list (file_path: &str) -> Vec<Vec<i32>> {
